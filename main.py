@@ -2,8 +2,8 @@
 
 #To Do:
 
-#- slash commands
-#- bot DMs user
+#X- slash commands
+#X- bot DMs user
 #- bot creates channel
 #- bot reads local XML files
 #- bot outputs map image for user
@@ -30,9 +30,28 @@ def searchMap(node, parents = []):
     return result, parents
 #...
 
+######################################################################################
+
+#Here is the (non-slash) way to DM a user
+
+#overriding the on_message function to watch for messages in DMs
+@bot.event
+async def on_message(message: discord.Message):
+  if message.guild is None and not message.author.bot: #if this message is a DM
+    #do other stuff here
+    await message.author.send("I got your dm! ```{}```".format(message.content))#Respond with a DM
+  await bot.process_commands(message)#make sure to include this line, so that it processes other stuff normally
+  
+#how to respond to a message in the regular channel by DMing the user
+@commands.guild_only()
+@bot.command()
+async def dm(ctx, *, args=""):
+  #await bot.send_message(ctx.author, "here's a dm!")
+  await ctx.author.send("here's a DM!") #send a DM to the user
+  await ctx.send("I sent you a dm or two!") #send a DM in the regular channel
 
 
-
+######################################################################################
 
 #Here is the minimal bot from the discord-interactions library for slash commands:
 
