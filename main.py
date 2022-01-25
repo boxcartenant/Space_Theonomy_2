@@ -69,3 +69,26 @@ async def test(ctx):
 
 bot.start()
 
+######################################################################################
+
+#Here's the minimal bot updated to include a single argument.
+import interactions
+
+bot = interactions.Client(token="token here")
+
+@bot.command(name="test",
+             description="Helptext for the command",
+             options= [
+                 interactions.Option(
+                     name="argument1",
+                     description="Helptext describing the argument",
+                     type=interactions.OptionType.STRING,
+                     required=False
+                     )
+                 ]
+             )
+async def test(ctx, argument1 = ""):
+    #print(ctx)
+    await ctx.send("args: {}".format(argument1))
+
+bot.start()
